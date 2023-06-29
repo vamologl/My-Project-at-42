@@ -31,10 +31,29 @@ int	main(int ac, char **av)
 		j = 0;
 		while (j < data ->width)
 		{
-			printf("%d ", data->z_matrix[i][j]);
+			printf("%3d", data->z_matrix[i][j]);
 			j++;
 		}
 		printf("\n");
 		i++;
 	}
 }
+/*
+int	main(int ac, char **av)
+{
+	char *l;
+	int	fd;
+	(void)ac;
+	//int	i = 0;
+
+	fd = open(av[1], O_RDONLY);
+	l = (char *)malloc(sizeof(char) + 1);
+	while (get_next_line(fd, &l))
+	{
+		//printf("%d\n", i);
+		printf("%s\n", l);
+		//i++;
+	}
+	close (fd);
+	return (0);
+}*/

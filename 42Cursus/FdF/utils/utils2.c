@@ -12,94 +12,71 @@
 
 #include "../include/fdf.h"
 
-int	ft_nbword(char const *s, char c)
+char	*ft_strnew(size_t size)
+{
+	char *str;
+
+	str = (char *)malloc(sizeof(char) * (size + 1));
+	if (str == NULL)
+		return (NULL);
+	while (size > 0)
+		str[size--] = '\0';
+	str[0] = '\0';
+	return (str);
+}
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+		i++;
+	return (i);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*str;
+	int		i;
+
+	str = (char *)malloc(sizeof(char) * (ft_strlen((char *)s1) + \
+		ft_strlen((char *)s2) + 1));
+	i = 0;
+	if (str != NULL)
+	{
+		while (*s1 != '\0')
+		{
+			str[i] = *s1;
+			i++;
+			s1++;
+		}
+		while (*s2 != '\0')
+		{
+			str[i] = *s2;
+			i++;
+			s2++;
+		}
+		str[i] = '\0';
+	}
+	return (str);
+}
+
+char	*ft_strchr(const char *s, int c)
 {
 	int	i;
-	int	word;
 
 	i = 0;
-	word = 0;
-	while (s && s[i])
+	while (s[i] != '\0')
 	{
-		if (s[i] != c)
-		{
-			word++;
-			while (s[i] != c && s[i])
-				i++;
-		}
-		else
-			i++;
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		s++;
 	}
-	return (word);
+	if (s[i] == (char)c)
+		return ((char *)&s[i]);
+	return (NULL);
 }
-
-int	ft_lword(char const *s, char c, int i)
-{
-	int	size;
-
-	size = 0;
-	while (s[i] != c && s[i])
-	{
-		size++;
-		i++;
-	}
-	return (size);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	int		i;
-	int		j;
-	int		size;
-	int		word;
-	char	**strs;
-
-	i = 0;
-	j = -1;
-	word = ft_nbword(s, c);
-	strs = (char **)malloc((word + 1) * sizeof(char *));
-	if (!strs)
-		return (NULL);
-	while (++j < word)
-	{
-		while (s[i] == c)
-			i++;
-		size = ft_lword(s, c, i);
-		strs[j] = ft_strsub(s, i, size);
-		if (!strs[j])
-			return (NULL);
-		i += size;
-	}
-	strs[j] = 0;
-	return (strs);
-}
-
-int	get_next_line(const int fd, char **line)
-{
-	int			ret;
-	static char	*s[FD_SIZE];
-	char		buff[BUFF_SIZE + 1];
-	char		*tmp;
-
-	if (fd < 0 || line == NULL)
-		return (-1);
-	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
-	{
-		buff[ret] = '\0';
-		if (s[fd] == NULL)
-			s[fd] = ft_strdup(buff);
-		else
-		{
-			tmp = ft_strjoin(s[fd], buff);
-			free(s[fd]);
-			s[fd] = tmp;
-		}
-		if (ft_strchr(s[fd], '\n'))
-			break ;
-	}
-	return (output(s, line, ret, fd));
-}
-
 
 int		words(char const *str, char c)
 {

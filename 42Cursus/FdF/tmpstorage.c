@@ -291,3 +291,15 @@ char	*ft_strchr(const char *s, int c)
 }
 
 /*------------------------------------*/
+
+gdb etape
+
+-g3 
+gdb ./a.out
+lay next 
+break main
+
+run (argument)
+
+next  (instuction suivente)
+step (dans la fonction)

@@ -70,17 +70,17 @@ void	read_file(char *fname, fdf *data)
 	int		i;
 	char	*line;
 
+	fd = open(fname, O_RDONLY); // wrong read if placed else where
 	i = 0;
-	data->height = get_height(fname);
-	data->width = get_width(fname);
-	data->z_matrix = (int **)malloc(sizeof(int *) * (data->height + 1));
-	while (i <= data->height)
+	data->height = get_height(fname); //get height
+	data->width = get_width(fname); // get width
+	data->z_matrix = (int **)malloc(sizeof(int *) * (data->height + 1)); //alloc height
+	while (i <= data->height) // mem alloc width
 	{
 		data->z_matrix[i] = (int *)malloc(sizeof(int *) * (data->width + 1));
 		i++;
 	}
-	i = 0;
-	fd = open(fname, O_RDONLY, 0);
+	i = 0; 
 	while (get_next_line(fd, &line))
 	{
 		fill_matrix(data->z_matrix[i], line);

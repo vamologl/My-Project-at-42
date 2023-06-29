@@ -20,8 +20,7 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	i = 0;
 	if (!s || start + len > ft_strlen(s))
 		return (NULL);
-	result = ft_strnew(len);
-	if (result)
+	if ((result = ft_strnew(len)))
 	{
 		while (len)
 		{
@@ -33,13 +32,66 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	return (result);
 }
 
-void	ft_strdel(char **as)
+int	ft_nbword(char const *s, char c)
 {
-	if (as && *as)
+	int	i;
+	int	word;
+
+	i = 0;
+	word = 0;
+	while (s && s[i])
 	{
-		free(*as);
-		*as = NULL;
+		if (s[i] != c)
+		{
+			word++;
+			while (s[i] != c && s[i])
+				i++;
+		}
+		else
+			i++;
 	}
+	return (word);
+}
+
+int	ft_lword(char const *s, char c, int i)
+{
+	int	size;
+
+	size = 0;
+	while (s[i] != c && s[i])
+	{
+		size++;
+		i++;
+	}
+	return (size);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	int		i;
+	int		j;
+	int		size;
+	int		word;
+	char	**strs;
+
+	i = 0;
+	j = -1;
+	word = ft_nbword(s, c);
+	strs = (char **)malloc((word + 1) * sizeof(char *));
+	if (!strs)
+		return (NULL);
+	while (++j < word)
+	{
+		while (s[i] == c)
+			i++;
+		size = ft_lword(s, c, i);
+		strs[j] = ft_strsub(s, i, size);
+		if (!strs[j])
+			return (NULL);
+		i += size;
+	}
+	strs[j] = 0;
+	return (strs);
 }
 
 int	ft_atoi(const char *str)
@@ -66,34 +118,4 @@ int	ft_atoi(const char *str)
 	}
 	result *= sign;
 	return (result);
-}
-
-char	*ft_strdup(const char *s)
-{
-	size_t	len;
-	int		i;
-	char	*dst;
-
-	len = ft_strlen((char *)s);
-	i = 0;
-	dst = (char *)malloc(sizeof(char) * (len + 1));
-	if (!dst)
-		return (0);
-	while (s[i])
-	{
-		dst[i] = s[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return (dst);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
 }

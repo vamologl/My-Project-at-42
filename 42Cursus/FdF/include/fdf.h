@@ -12,8 +12,10 @@
 #ifndef FDF_H
 # define FDF_H
 
-# define BUFF_SIZE 8
-# define FD_SIZE 4096
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 32
+
+# endif
 
 //#include "minilibx/mlx.h"
 //# include "libft/libft.h"

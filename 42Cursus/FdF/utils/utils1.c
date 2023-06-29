@@ -12,60 +12,13 @@
 
 #include "../include/fdf.h"
 
-char	*ft_strchr(const char *s, int c)
+void	ft_strdel(char **as)
 {
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
+	if (as && *as)
 	{
-		if (s[i] == (char)c)
-			return ((char *)&s[i]);
-		s++;
+		free(*as);
+		*as = NULL;
 	}
-	if (s[i] == (char)c)
-		return ((char *)&s[i]);
-	return (NULL);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*str;
-	int		i;
-
-	str = (char *)malloc(sizeof(char) * (ft_strlen((char *)s1) + \
-		ft_strlen((char *)s2) + 1));
-	i = 0;
-	if (str != NULL)
-	{
-		while (*s1 != '\0')
-		{
-			str[i] = *s1;
-			i++;
-			s1++;
-		}
-		while (*s2 != '\0')
-		{
-			str[i] = *s2;
-			i++;
-			s2++;
-		}
-		str[i] = '\0';
-	}
-	return (str);
-}
-
-char	*ft_strnew(size_t size)
-{
-	char	*str;
-
-	str = (char *)malloc(sizeof(char) * (size + 1));
-	if (str == NULL)
-		return (NULL);
-	while (size > 0)
-		str[size--] = '\0';
-	str[0] = '\0';
-	return (str);
 }
 
 int	appendline(char **s, char **line)
@@ -101,4 +54,50 @@ int	output(char **s, char **line, int ret, int fd)
 		return (0);
 	else
 		return (appendline(&s[fd], line));
+}
+
+int			get_next_line(const int fd, char **line)
+{
+	int			ret;
+	static char	*s[BUFFER_SIZE];
+	char		buff[BUFFER_SIZE + 1];
+	char		*tmp;
+
+	if (fd < 0 || line == NULL)
+		return (-1);
+	while ((ret = read(fd, buff, BUFFER_SIZE)) > 0)
+	{
+		buff[ret] = '\0';
+		if (s[fd] == NULL)
+			s[fd] = ft_strdup(buff);
+		else
+		{
+			tmp = ft_strjoin(s[fd], buff);
+			free(s[fd]);
+			s[fd] = tmp;
+		}
+		if (ft_strchr(s[fd], '\n'))
+			break ;
+	}
+	return (output(s, line, ret, fd));
+}
+
+char	*ft_strdup(const char *s)
+{
+	size_t	len;
+	int		i;
+	char	*dst;
+
+	len = ft_strlen((char *)s);
+	i = 0;
+	dst = (char *)malloc(sizeof(char) * (len + 1));
+	if (!dst)
+		return (0);
+	while (s[i])
+	{
+		dst[i] = s[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }
