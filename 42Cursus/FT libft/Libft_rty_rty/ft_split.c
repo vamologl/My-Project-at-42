@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int	ft_nbword(char const *s, char c)
+int	ft_nbword(char const *s, char c)
 {
 	int	i;
 	int	word;
@@ -33,7 +33,7 @@ static int	ft_nbword(char const *s, char c)
 	return (word);
 }
 
-static int	ft_lword(char const *s, char c, int i)
+int	ft_lword(char const *s, char c, int i)
 {
 	int	size;
 
