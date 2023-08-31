@@ -11,3 +11,13 @@
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
+
+float   maxim(float a, float b)
+{
+    return (a > b ? a : b);
+}
+
+float   mod(float i)
+{
+    return (i < 0) ? -i : i;
+}

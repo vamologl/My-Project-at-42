@@ -21,7 +21,7 @@ void	ft_strdel(char **as)
 	}
 }
 
-int	appendline(char **s, char **line)
+int		appendline(char **s, char **line)
 {
 	int		len;
 	char	*tmp;
@@ -46,7 +46,7 @@ int	appendline(char **s, char **line)
 	return (1);
 }
 
-int	output(char **s, char **line, int ret, int fd)
+int		output(char **s, char **line, int ret, int fd)
 {
 	if (ret < 0)
 		return (-1);

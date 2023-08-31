@@ -9,6 +9,7 @@
 /*   Updated: 2023/06/19 14:07:06 by vamologl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 
@@ -19,23 +20,27 @@
 
 //#include "minilibx/mlx.h"
 //# include "libft/libft.h"
-#include "../minilibx-linux/mlx.h"
+
+# include "../mlx/mlx.h"
 # include <fcntl.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <stddef.h>
 # include <string.h>
 # include <unistd.h>
+# include <math.h>
 
 
 typedef struct
 {
-	int	width;
-	int	height;
-	int	**z_matrix;
+	int		width;
+	int		height;
+	int		**z_matrix;
+	int		zoom;
+	int		color;
+
+	int		modif_x;
+	int		modif_y;
 
 	void	*mlx_ptr;
 	void	*win_ptr;
@@ -56,42 +61,41 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;*/
 
+//draw file
+void    bresenham(float x, float y, float x1, float y1, fdf *data);
+float   mod(float i);
+float   max(float a, float b);
+void    draw(fdf *data);
 
+//read_file file
 void	fill_matrix(int *z_line, char *line);
+int	get_height(char *fname);
+int	get_width(char *fname);
 void	read_file(char *fname, fdf *data);
 
-int		get_width(char *fname);
-int		get_height(char *fname);
+//utils0
+char	*ft_strsub(char const *s, unsigned int start, size_t len);
 int		ft_nbword(char const *s, char c);
 int		ft_lword(char const *s, char c, int i);
+char	**ft_split(char const *s, char c);
 int		ft_atoi(const char *str);
 
-char	**ft_split(char const *s, char c);
-
-size_t	ft_strlen(const char *s);
-int		get_next_line(const int fd, char **line);
-
-char	*ft_next(char *b);
-char	*ft_free(char *buffer, char *buf);
-char	*ft_line(char *b);
-char	*gnl_read_file(int fd, char *res);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strchr(const char *str, int c);
-char	*ft_strsub(char const *s, unsigned int start, size_t len);
-char	*ft_strdup(const char *s);
-char	*ft_strnew(size_t size);
-
-void	*ft_calloc(size_t count, size_t size);
-void	ft_bzero(void *s, size_t n);
+//utils1
 void	ft_strdel(char **as);
-
-size_t	ft_strlen(const char *str);
-char	*ft_strjoin(char const *s1, char const *s2);
-
-char	*ft_strchr(const char *s, int c);
-
+int		appendline(char **s, char **line);
 int		output(char **s, char **line, int ret, int fd);
+int		get_next_line(const int fd, char **line);
+char	*ft_strdup(const char *s);
 
+//utils2
+char	*ft_strnew(size_t size);
+size_t	ft_strlen(const char *str);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin(char const *s1, char const *s2);
 int		words(char const *str, char c);
+
+//utils3
+float   maxim(float a, float b);
+float   mod(float i);
 
 #endif

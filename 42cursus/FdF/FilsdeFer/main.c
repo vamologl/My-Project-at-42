@@ -11,12 +11,56 @@
 /* ************************************************************************** */
 
 #include "include/fdf.h"
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdio.h>
 
-int	main(int ac, char **av)
+int		deal_key(int key, fdf *data)
+{
+	(void)data;
+	printf("%d\n", key);
+	if (key == 65451)
+		printf("+");
+	if (key == 65362)
+	{
+		printf("up");
+		data->modif_x -= 10;
+	}
+	if (key == 65364)
+		printf("down");
+	if (key == 65361)
+		printf("left");
+	if (key == 65363)
+		printf("right");
+	return (1);
+}
+
+int		main(int ac, char **av)
+{
+	fdf		*data;
+	
+	if (ac != 2)
+	{
+		printf("Erreur argument");
+		return (-1);
+	}
+
+	data = (fdf *)malloc(sizeof(fdf));
+	read_file(av[1], data);
+
+	data->mlx_ptr = mlx_init();
+	data->win_ptr = mlx_new_window(data->mlx_ptr, 750, 750, "FdF");
+	data->zoom = 8;
+
+	//bresenham(1, 1, 499, 499, data);
+	draw(data);
+
+	mlx_key_hook(data->win_ptr, deal_key, data);
+	mlx_loop(data->mlx_ptr);
+
+	return (0);
+}
+
+
+// main pour lire le fichier main
+/*int	main(int ac, char **av)
 {
 	int	i;
 	int	j;
@@ -37,23 +81,4 @@ int	main(int ac, char **av)
 		printf("\n");
 		i++;
 	}
-}
-/*
-int	main(int ac, char **av)
-{
-	char *l;
-	int	fd;
-	(void)ac;
-	//int	i = 0;
-
-	fd = open(av[1], O_RDONLY);
-	l = (char *)malloc(sizeof(char) + 1);
-	while (get_next_line(fd, &l))
-	{
-		//printf("%d\n", i);
-		printf("%s\n", l);
-		//i++;
-	}
-	close (fd);
-	return (0);
 }*/

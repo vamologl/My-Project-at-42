@@ -16,7 +16,14 @@ CFLAGS = -Wall -Werror -Wextra -g3
 RM = rm -f
 INCLUDE = include
 
-SRCS = testwindow.c
+SRCS = 	draw/draw.c \
+		map/read_file.c \
+		utils/utils0.c \
+		utils/utils1.c \
+		utils/utils2.c \
+		utils/utils3.c \
+		main.c
+
 
 OBJS = $(SRCS:.c=.o)
 
