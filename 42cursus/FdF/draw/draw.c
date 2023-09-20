@@ -35,7 +35,7 @@ void	bresenham2(float x, float y, float x1, float y1, t_fdf *data)
 	y_step /= max;
 	while ((int)(x - x1) || (int)(y - y1))
 	{
-		mlx_pixel_put(data->mlx_ptr, data->win_ptr, x, y, data->color);
+		render(data, x, y, data->color);
 		x += x_step;
 		y += y_step;
 	}
@@ -63,6 +63,9 @@ void	draw(t_fdf *data)
 	int	x;
 	int	y;
 
+	data->img_ptr = mlx_new_image(data->mlx_ptr, data->size_win_x, data->size_win_y);
+	data->img_buffer = mlx_get_data_addr(data->img_ptr, &data->bpp, &data->line_len, &data->endian);
+	
 	y = 0;
 	while (y < data->height)
 	{
@@ -77,4 +80,6 @@ void	draw(t_fdf *data)
 		}
 		y++;
 	}
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_ptr, 0, 0);
+	mlx_destroy_image(data->mlx_ptr, data->img_ptr);
 }

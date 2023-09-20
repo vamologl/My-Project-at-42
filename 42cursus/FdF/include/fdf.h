@@ -18,7 +18,7 @@
 
 # endif
 
-# include "../mlx/mlx.h"
+# include "../minilibx-linux/mlx.h"
 # include "ft_printf/ft_printf.h"
 
 # include <fcntl.h>
@@ -29,6 +29,8 @@
 # include <unistd.h>
 # include <math.h>
 # include <X11/Xlib.h>
+
+
 
 //keyboard keys
 typedef enum e_touch
@@ -66,13 +68,17 @@ typedef struct	s_fdf
 	void	*mlx_ptr;
 	void	*win_ptr;
 
+	char	*img_buffer;
 	void	*img_ptr;
 	char	*addr;
 	int		bpp;
 	int		line_len;
 	int		endian;
-}				t_fdf;
 
+	int		xtest;
+	int		ytest;
+
+}				t_fdf;
 
 typedef struct	s_arr
 {
@@ -91,21 +97,24 @@ typedef struct	s_coords
 	int		z1;
 }				t_coords;
 
-/*
+
 typedef struct s_list
 {
 	void			*content;
 	size_t			content_size;
 	struct s_list	*next;
-}				t_list;*/
+}				t_list;
 
 //mainfile
 
 //draw file
 void    bresenham(float x, float y, float x1, float y1, t_fdf *data);
 void    draw(t_fdf *data);
-float   mod(float i);
-float   max(float a, float b);
+
+//render file
+void    render(t_fdf *data, int x, int y, int color);
+void	img_pix_put(t_fdf *data, int x, int y, int color);
+void    img_clear(t_fdf *data);
 
 //read_file file
 void	fill_matrix(int *z_line, char *line);

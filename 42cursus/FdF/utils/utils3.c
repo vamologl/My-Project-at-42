@@ -32,8 +32,8 @@ float   mod(float i)
 
 int		set_color(int z)
 {
-	if (z > 0)
-		return (0x323232);
+	if (z != 0)
+		return (0xbc00ff);
 	else
-		return (0x00bcff);
+		return (0x6f6f6f);
 }

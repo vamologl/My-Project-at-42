@@ -19,8 +19,14 @@ RM = rm -f
 
 MLX = mlx/libmlx_Linux.a -lXext -lX11 -lm -lz
 
+MINILIB = minilibx-linux/libmlx_Linux.a -lXext -lX11 -lm -lz
+
+SRCST =	test_window.c \
+
+
 SRCS = 	src/main.c \
-		draw/draw_img.c \
+		draw/draw.c \
+		draw/render.c \
 		utils/utils0.c \
 		utils/utils1.c \
 		utils/utils2.c \
@@ -36,10 +42,10 @@ SRCS = 	src/main.c \
 OBJS = $(SRCS:.c=.o)
 
 $%.o: $%.c
-	$(CC) $(CFLAGS) $(SRCS) $(MLX) -c $< -o $@
+	$(CC) $(CFLAGS) $(SRCS) $(MINILIB) -c $< -o $@
 
 $(NAME): ${OBJS}
-	$(CC) $(OBJS) $(CGFLAGS) $(MLX) -o $(NAME)
+	$(CC) $(OBJS) $(CGFLAGS) $(MINILIB) -o $(NAME)
 	
 all: ${NAME}
 
