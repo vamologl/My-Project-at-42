@@ -1,0 +1,29 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    note.h.txt                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: spagliar <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/08/14 08:59:31 by spagliar          #+#    #+#              #
+#    Updated: 2023/08/14 08:59:42 by spagliar         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+//La structure "t_server_data" contient les champs suivants :
+
+//"received_message" : un tableau de caractères pour stocker les bits de données reçus. 
+//La taille de ce tableau est définie par la constante "MESSAGE_SIZE".
+
+//"current_bit" : un entier pour représenter le bit actuel en cours de réception.
+
+//"current_char" : un entier pour représenter l'index du caractère actuel dans le tableau //"received_message".
+
+//"message_complete" : un indicateur qui indique si le message complet a été reçu.
+//Une valeur non nulle signifie que le message est complet.
+
+//Ces champs sont utilisés dans la fonction "receive_bit" pour stocker les données reçues
+//et suivre l'avancement de la réception du message.
+
+//Il est important de noter que la structure "t_server_data" est définie comme un alias pour "struct //s_server_data" en utilisant la syntaxe "typedef". 
+//Cela permet d'utiliser le nom "t_server_data" pour déclarer des variables de ce type sans avoir à écrire la keyword "struct" à chaque fois.
