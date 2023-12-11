@@ -1,44 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pushswap.h                                         :+:      :+:    :+:   */
+/*   Move_B.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vamologl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/14 07:55:34 by vamologl          #+#    #+#             */
-/*   Updated: 2023/08/14 08:00:05 by vamologl         ###   ########.fr       */
+/*   Created: 2023/12/04 13:56:42 by vamologl          #+#    #+#             */
+/*   Updated: 2023/12/04 13:56:43 by vamologl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSHSWAP_H
-# define PUSHSWAP_H
+#include "../include/PushSwap.h"
 
-#include <stdio.h>
-#include <unistd.h>
-
-/*stack*/
-typedef struct
+void	sb(t_stack **b)
 {
-    int    value;
-    struct stack* next;
-}                stack; 
+	swap(b);
+	ft_printf("sb\n");
+}
 
-
-typedef struct s_list
+void	pb(t_stack **b, t_stack **a)
 {
-	int	indx;
-	int	val;
-	struct s_list	*next;
-}				t_list;
+	push(b, a);
+	ft_printf("pb\n");
+}
 
+void	rb(t_stack **b)
+{
+	rotate(b);
+	ft_printf("rb\n");
+}
 
-
-struct test_stack {
-	int	indx;
-	int	val;
-	int	**stack;
-};
-
-int	ft_atoi(const char *str);
-
-#endif
+void	rrb(t_stack **b)
+{
+	reverse_rotate(b);
+	ft_printf("rrb\n");
+}
