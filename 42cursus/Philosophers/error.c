@@ -5,62 +5,53 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vamologl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 11:34:18 by vamologl          #+#    #+#             */
-/*   Updated: 2023/12/18 11:34:20 by vamologl         ###   ########.fr       */
+/*   Created: 2024/01/02 09:56:29 by vamologl          #+#    #+#             */
+/*   Updated: 2024/01/02 09:56:30 by vamologl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/Philo.h"
+#include "Philo.h"
 
-void	not_enough_arg(void)
+void	error_arg(void)
 {
-	printf("Error - ");
-	printf("./philosopher [number_of_philosopher] [time_to_die] ");
-	printf("[time_to_eat] [time_to_sleep] ");
-	printf("[number_of_times_each_philosopher_must_eat]\n");
-	exit(-1);
+	printf("Error 1, use ./Philosopher [Number of Philosopher] ");
+	printf("[time to die] [time to eat] [time to sleep] ");
+	printf("(How many time a philosopher must eat)\n");
+	exit (-1);
 }
 
-void	not_int(void)
+int	full_mem_exit(t_gest *gest, t_philos *philo, t_fork *forks)
 {
-	printf("Error - arg are not supported int\n");
-	exit(-2);
-}
-
-void	mem_error_arg(void *data)
-{
-	free(data);
-	printf("ERROR - memory alloc failed");
-	exit(-3);
-}
-
-bool	arg_int_check(int ac, char **av)
-{
-	int	i;
-	int	j;
-
-	i = 1;
-	while (i < ac)
+	if (gest)
 	{
-		j = 0;
-		while (av[i][j])
-		{
-			if (!(av[i][j] >= '0' && av[i][j] <= '9'))
-				return (false);
-			else
-				j++;
-		}
-		if (0 > atoi(av[i]))
-			return (false);
-		i++;
+		if (pthread_mutex_destroy(&gest->death_mutex))
+			return (EXIT_FAILURE);
+		if (pthread_mutex_destroy(&gest->philo_mutex))
+			return (EXIT_FAILURE);
 	}
-	return (true);
+	if (philo)
+		free(philo);
+	if (forks)
+	{
+		if (pthread_mutex_destroy(&forks->fork_mutex))
+			return (EXIT_FAILURE);
+		free(forks);
+	}
+	return (EXIT_SUCCESS);
 }
 
-void	check_arg(int ac, char **av)
+int	gest_err(int code, t_gest *g, t_philos *philo, t_fork *forks)
 {
-	if (!arg_int_check(ac, av)) /*-error check arg for int-*/
-		not_int();
-	if (!(6 == ac || 5 == ac)) /*-error check if there are 5 or 6 arg-*/
-		not_enough_arg();
+	if (1 == code)
+		error_arg();
+	else if (2 == code)
+		printf("Error 2, arg are not compatible");
+	else if (3 == code)
+		printf("Error 3, Mutex failed to initialise");
+	else if (4 == code)
+		printf("Error 4, failed to malloc the philosophers");
+	else if (5 == code)
+		printf("Error 5, a thread caused an error");
+	full_mem_exit(g, philo, forks);
+	return (EXIT_FAILURE);
 }
