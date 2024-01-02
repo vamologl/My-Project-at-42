@@ -6,6 +6,7 @@
 # include <unistd.h>
 
 int	thread_nb = 0;
+int max_value = 0;
 int	b_time = 0;
 
 /*-structure for mutex data-*/
@@ -32,10 +33,10 @@ void	*thread1t(void *arg)
 	t_mutex_data *md = (t_mutex_data*) arg;
 	pthread_t tid = pthread_self();
 
-	while ((*md).data < 5000000)
+	while ((*md).data < max_value)
 	{
 		pthread_mutex_lock(&(*md).mutex);
-		if ((*md).data == 5000000) 
+		if ((*md).data == max_value) 
 		{
 			break;
 			pthread_mutex_unlock(&(*md).mutex);
@@ -60,8 +61,12 @@ int	main(int ac, char **av)
 	int i = 0;
 	int errc;
 
-	if (!av[1])
+	if (!(av[1] && av[2]) || atoi(av[1]) <= 0)
+	{
+		printf("./test [nb-threads] [max-value]");
 		exit(-1);
+	}
+	max_value = atoi(av[2]);
 	pthread_t	threads[atoi(av[1])];
 	if (pthread_mutex_init(&md.mutex, NULL) != 0) // init mutex
 	{
