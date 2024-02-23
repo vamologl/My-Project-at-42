@@ -13,31 +13,6 @@
 #include "include/minishell.h"
 
 
-	// else if (!ft_strcmp(base->input, "env")) 	// to move elsewhere
-	// 	print_list_env(base->env); 				// to move elsewhere
-	// else if (!ft_strcmp(base->input, "pwd")) 	// to move elsewhere
-	// 	get_pwd(base); 							// to move elsewhere
-	// else if (!ft_strncmp(base->input, "cd ", 2)) 	// to move elsewhere
-	// 	own_cd(base->input); 
-	// else if (!ft_strcmp(base->input, "echo")) 	// to move elsewhere
-	// 	own_echo(base); 
-	// else if (base->input[0] != '\0' && ft_parser(base->input) == 1 
-	// 	&& chk_directory(base) == 1) // 1 is every things is OK
-	// {
-	// 	if (chk_pipe_end(base->input) == 1)
-	// 	{
-	// 		printf("pipe end 1\n");
-	// 		//do shit here
-	// 	}
-	// 	else if (chk_pipe_end(base->input) == 0)
-	// 		printf("random bullshit goes there\n");
-	// 		//only_one_command(base);
-	// }
-	// else
-	// 	message_error(base->input, 3); // 3 does not exist
-
-
-
 
 void	received_signal(int n)
 {
@@ -56,7 +31,10 @@ void	received_signal(int n)
 		rl_redisplay();
 	}
 	else if (n == SIGSEGV) // mem crash should not be there
-		printf("SIGSEGV\n");
+	{
+		printf("SIGSEGV -> Fuck you\n");
+		exit(-2147483647);
+	}
 }
 
 int	ft_parser(char *s)
@@ -75,7 +53,7 @@ int	ft_parser(char *s)
 	}
 	else
 	{
-		printf("else condition does not exist\n");
+		printf("Error - else condition does not exist\n");
 		return (0);
 	}
 	return (1);
@@ -118,6 +96,8 @@ void	ft_loop(t_base *base)
 	}
 }
 
+
+
 int	main(int ac, char **av, char **env)
 {
 	t_base *base;
@@ -125,17 +105,18 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 
-	base = NULL;
+	//base = NULL;
 	signal(SIGINT, &received_signal);
 	signal(SIGTSTP, &received_signal);
 	signal(SIGQUIT, &received_signal);
+	//signal(SIGSEGV, &received_signal); // remove this
+
 
 	base = malloc(sizeof(t_base));
+	base->env_old = env;
 	initial_chain(&base->env, env); // clone env
 	init_user(base);
 	
-
-	//base->lst->head = NULL; // SEGSEGV is there
 	ft_loop(base); // loop
 	rl_clear_history(); // clear historic
 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "../include/minishell.h"
 
 int cmp_len(char *s1, char *s2)
 {
@@ -29,7 +29,7 @@ int	find_equal(char *s)
 	if (!s)
 	{
 		printf("str in find equal is NULL");
-		return (-1);
+		return (0);
 	}
 	i = 0;
 	while (s[i] != '\0')
@@ -38,7 +38,7 @@ int	find_equal(char *s)
 			return (i);
 		i++;
 	}
-	return (-1);
+	return (0);
 }
 
 char	*ft_dup_name(char *env)
@@ -49,10 +49,12 @@ char	*ft_dup_name(char *env)
 	name = malloc(sizeof(char *) * find_equal(env) + 1);
 	if (!name)
 		return (NULL);
-	if (find_equal(env) != -1)
+	if (find_equal(env) != 0)
 	{
-		while (env[i] != '=')
+		while (env[i] != '\0')
 		{
+			if (env[i] == '=')
+				break;
 			name[i] = env[i];
 			i++;
 		}

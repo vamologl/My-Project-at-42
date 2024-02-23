@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
+#include "../include/minishell.h"
 
 void	*ft_find_quote(char *s)
 {
@@ -78,4 +78,47 @@ char	**ft_get_text(char *s)
 		indx++;
 	}
 	return (tab);
+}
+
+int	ft_is_that_char(const char *s, int c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char)c)
+			return (i);
+		i++;
+	}
+	return (ft_strlen(s));
+}
+
+
+int there_is_equal(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int find_that_char(char *s, char c)
+{
+	int i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }

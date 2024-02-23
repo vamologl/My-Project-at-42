@@ -14,40 +14,45 @@
 
 int	countwords(char const *str, int count, int inword, int insidequotes)
 {
-	while (*str) 
-	{
-		if (*str == ' ' || *str == '\t' || *str == '\n')
-		{
-			if (!insidequotes) 
-				inword = 0;
-		} 
-		else if (*str == '\"') 
-		{
-			insidequotes = !insidequotes;
-			if (!insidequotes && inword == 0)
-			{
-				inword = 1;
-				count++;
-			}
-		}
-		else if (*str == '\'') 
-		{
-			insidequotes = !insidequotes;
-			if (!insidequotes && inword == 0)
-			{
-				inword = 1;
-				count++;
-			}
-		}
-		else if (inword == 0)
-		{
-			inword = 1;
-			count++;
-		}
-		str++;
-	}
-	return (count);
+    while (*str) 
+    {
+        if (*str == ' ' || *str == '\t' || *str == '\n')
+        {
+            if (!insidequotes) 
+                inword = 0;
+        } 
+        else if (*str == '\"') 
+        {
+            insidequotes = !insidequotes;
+            if (insidequotes && inword == 0)
+            {
+                inword = 1;
+                count++;
+            }
+            else if (!insidequotes)
+            {
+                inword = 0;
+            }
+        }
+        else if (*str == '=')
+        {
+            if (inword == 1)
+            {
+                inword = 0;
+            }
+            count++;
+        }
+        else if (inword == 0 && !insidequotes)
+        {
+            inword = 1;
+            count++;
+        }
+        str++;
+    }
+    return count;
 }
+
+
 
 
 char	*ft_strdup(const char *s)
@@ -140,15 +145,31 @@ void	get_input_tab(t_base *base)
 void	parser(t_base *base)
 {
 	get_input_tab(base);
-	if (ft_strcmp("env", base->tableau[0]) == 0)
+	if (ft_strcmp("", base->tableau[0]) == 0)
+		return ;
+	else if (ft_strcmp("env", base->tableau[0]) == 0)
 		print_list_env(base->env);
 	else if (ft_strcmp("echo", base->tableau[0]) == 0)
 		own_echo(base);
-	return; 
+	else if (ft_strcmp("pwd", base->tableau[0]) == 0)
+		get_pwd(base);
+	else if (ft_strcmp("cd", base->tableau[0]) == 0)
+		own_cd(base->input);
+	else if (ft_strcmp("export", base->tableau[0]) == 0)
+		ft_export(base);
+	else if (ft_strcmp("unset", base->tableau[0]) == 0)
+		ft_unset(base);
+	else if (ft_strcmp("exit", base->tableau[0]) == 0)
+	{
+		printf("exit not free'd\n");
+		exit_prog(0, base->env);
+		exit(1273);
+	}
+	else if (!ft_exec_prog(base->tableau, base))
+		printf("Error - command %s not found\n", base->input);
+	return ;
 }
 
-
-
 	//chaque "mot" dans un maillon [x]
-	//changer les variables env en votre valeur ($PATH -> path dans votre env) [?]
+	//changer les variables env en votre valeur ($PATH -> path dans votre env) [x]
 	// -> exec [?]

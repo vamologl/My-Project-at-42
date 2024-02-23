@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 /*--include--*/
+#include <string.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +29,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <dirent.h>
+
 /*--macro--*/
 #define PATH_MAX 4096
 
@@ -42,13 +44,17 @@ typedef struct s_env
 	char			*value;
 }				t_env;
 
-
 typedef struct s_base
 {
 	char	**tableau;
 	char	*input;
 	char	*user;
 	char	*cur_pwd;
+	char 	**env_old;
+
+	int		pipe;			// not currently used, for pipe implementation
+	int 	**fd;			// not currently used, for pipe implementation
+	int		return_value;	// not currently used, for $? implementation
 
 	t_env		*env;
 }				t_base;
@@ -90,10 +96,11 @@ int		ft_strcmp(char *s1, char *s2);
 char	*ft_shlvl_var(char *s2);
 t_env	*find_last(t_env *head);
 void    print_chain(t_env *chain);
-char    *ft_get_string(t_env *chain, char *name);
+char    *get_var_env(t_env *chain, char *name);
 
 		/*listchained2*/
 void    add_link(t_env **chain, char *env);
+void    add_more_link(t_env **chain, char *env);
 void    initial_chain(t_env **chain, char **env);
 void	print_list_env(t_env *env_struct);
 
@@ -105,7 +112,7 @@ void	initial_list(t_env **env, char **variable_env);
 char	**ft_separ(char *s, char c);
 
 		/*parser_error*/
-	void	message_error(char *s, int flag);
+void	message_error(char *s, int flag);
 int		chk_directory2(char *str, int i);
 int		chk_directory(t_base *base);
 
@@ -116,7 +123,9 @@ int		ft_strnlen(char *s, int i);
 char	*spaceless_strdup(t_base *base);
 int		only_dots(char *s, int i);
 int		many_dots(char *s, int i);
+int		ft_find_redirection(char const *s, int i);
 
+int		ft_redir(t_base *base);
 	/*-check-*/
 		/*c_quote*/
 int		chk_quote(char *s);
@@ -135,12 +144,32 @@ void	parser(t_base *base);
 int		countwords(char const *str, int count, int inword, int insidequotes);
 void	get_input_tab(t_base *base);
 
-int	double_quote(const char *s, int i);
-int	ft_special_lword(char const *s, int i);
+int		double_quote(const char *s, int i);
+int		ft_special_lword(char const *s, int i);
 char	**ft_special_split(char const *s);
-int	ft_strlen_wo_quote(char *s);
+int		ft_strlen_wo_quote(char *s);
 char	*ft_strstrip(char *s);
 
 void	own_echo(t_base *base);
+
+
+int 	ft_exec_prog(char **av, t_base *base);
+int		ft_export(t_base *base);
+
+char	*ft_strndup(const char *s, int n);
+void 	ft_unset(t_base *base);
+int		ft_tablen(char **tab);
+int		ft_is_that_char(const char *s, int c);
+void	remove_old_env(t_base *base, char *var_name);
+int		there_is_equal(char *s);
+int 	find_that_char(char *s, char c);
+void	sorted(int argc, char **argv);
+void 	add_more_link(t_env **chain, char *env);
+void 	update_more_link(t_env *chain, char *env);
+t_env	*get_link(t_env *chain, char *env);
+int		link_already_exist(t_env *chain, char *env);
+char 	**ft_super_split(char const *s);
+int 	ft_super_countwords(char const *str);
+int 	check_if_storable(char *s);
 
 #endif

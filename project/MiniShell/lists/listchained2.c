@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   listchained2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vamologl <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/23 15:50:43 by vamologl          #+#    #+#             */
+/*   Updated: 2024/02/23 15:50:45 by vamologl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "../include/minishell.h"
+
 
 void    add_link(t_env **chain, char *env)
 {
@@ -10,9 +23,9 @@ void    add_link(t_env **chain, char *env)
     if (NULL == link)
         return ;
     link->next = NULL;
-    link->name = ft_dup_name(env);
+    link->name = ft_strjoin(ft_dup_name(env), "=");
     link->value = ft_dup_value(env);
-	if (ft_strcmp(link->name, "SHLVL") == 0)
+	if (ft_strcmp(link->name, "SHLVL=") == 0)
     	link->value = ft_shlvl_var(link->value);
     if (*chain == NULL)
     {
@@ -50,17 +63,23 @@ void    initial_chain(t_env **chain, char **env)
 void	print_list_env(t_env *env_struct)
 {
 	if (!env_struct)
-	{
-		printf("error - print list not there");
 		return ;
-	}
 	while (env_struct)
 	{
-		if (env_struct->name && env_struct->value)
-			printf("%s=%s\n", env_struct->name, env_struct->value);
-		else
-			printf("name and value not set");
-		env_struct = env_struct->next;
+        if (env_struct->name[ft_strlen(env_struct->name) - 1] == '=')
+        {
+
+		    if (env_struct->name && env_struct->value)
+            {
+                ft_putstr_fd(env_struct->name, 0);
+                ft_putstr_fd(env_struct->value, 0);
+                ft_putstr_fd("\n", 0);
+            }
+            else
+                ft_putstr_fd("name and value not set\n", 0);    
+            env_struct = env_struct->next;
+        }
+        else
+            env_struct = env_struct->next;
 	}
 }
-

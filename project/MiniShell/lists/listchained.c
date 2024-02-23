@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   listchained.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vamologl <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/23 15:50:47 by vamologl          #+#    #+#             */
+/*   Updated: 2024/02/23 15:50:49 by vamologl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
@@ -34,12 +46,12 @@ void    print_chain(t_env *chain)
 		return ;
 	while (chain->next)
 	{
-		printf("%s=%s\n", chain->name, chain->value);
+		printf("%s%s\n", chain->name, chain->value);
 		chain = chain->next;
 	}
 }
 
-char    *ft_get_string(t_env *chain, char *name)
+char    *get_var_env(t_env *chain, char *name)
 {
     char *s;
 

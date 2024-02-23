@@ -18,13 +18,14 @@ FLAGLFT = -Llibft -lft
 
 SRCS = main.c \
 	exit.c \
-	parse/ft_separ.c \
+	parse/parser.c \
+	parse/exec.c \
 	parse/parser_error.c \
 	parse/parser_utils2.c \
-	parse/parser.c \
 	parse/parser_utils.c \
-	utils.c \
-	utils2.c \
+	Utils/utils.c \
+	Utils/utils2.c \
+	Utils/utils3.c \
 	check/c_quote.c \
 	check/c_pipes.c \
 	lists/listchained.c \
@@ -32,6 +33,10 @@ SRCS = main.c \
 	builtin/ft_pwd.c \
 	builtin/ft_cd.c \
 	builtin/ft_echo.c \
+	builtin/ft_unset.c \
+	builtin/export/ft_export.c \
+	builtin/export/export_utils.c \
+	builtin/export/export_utils1.c \
 	user.c \
 
 
@@ -56,6 +61,7 @@ clear :
 
 
 #------------------------------------
+
 fclean : clean
 	rm -f $(NAME)
 	$(MAKE) fclean -C libft
@@ -68,7 +74,6 @@ fclear : clean
 	@echo "fclear"
 
 #------------------------------------
-
 
 re : fclean all
 
