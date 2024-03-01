@@ -11,13 +11,24 @@
 # **************************************************************************** #
 
 CC = gcc 
-NAME = Minishell
+NAME = minishell
 CFLAGS = -Wall -Wextra -Werror -g3
 
 FLAGLFT = -Llibft -lft
 
 SRCS = main.c \
 	exit.c \
+	builtin/export/ft_export.c \
+	builtin/export/export_utils.c \
+	builtin/export/export_utils1.c \
+	builtin/ft_pwd.c \
+	builtin/ft_cd.c \
+	builtin/ft_echo.c \
+	builtin/ft_unset.c \
+	check/c_quote.c \
+	check/c_pipes.c \
+	lists/listchained.c \
+	lists/listchained2.c \
 	parse/parser.c \
 	parse/exec.c \
 	parse/parser_error.c \
@@ -26,17 +37,6 @@ SRCS = main.c \
 	Utils/utils.c \
 	Utils/utils2.c \
 	Utils/utils3.c \
-	check/c_quote.c \
-	check/c_pipes.c \
-	lists/listchained.c \
-	lists/listchained2.c \
-	builtin/ft_pwd.c \
-	builtin/ft_cd.c \
-	builtin/ft_echo.c \
-	builtin/ft_unset.c \
-	builtin/export/ft_export.c \
-	builtin/export/export_utils.c \
-	builtin/export/export_utils1.c \
 	user.c \
 
 

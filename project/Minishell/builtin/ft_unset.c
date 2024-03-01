@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_unset.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vamologl <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/23 15:50:20 by vamologl          #+#    #+#             */
-/*   Updated: 2024/02/23 15:50:21 by vamologl         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../include/minishell.h"
 
 void remove_link(t_env **chain, char *var_name)
@@ -38,7 +26,8 @@ void remove_link(t_env **chain, char *var_name)
 	}
 }
 
-void remove_old_env(t_base *base, char *var_name) {
+void remove_old_env(t_base *base, char *var_name)
+{
     int i = 0;
     int shift = 0;
 
@@ -64,11 +53,13 @@ void ft_unset(t_base *base)
 	int i;
 	i = 1;
 
-	printf("%s\n", base->input);
-	while (base->tableau[i])
+    ft_putstr_fd("ft_unset\n", base->fd_out);
+    ft_putchar_fd('\n', base->fd_out);
+	// printf("%s\n", base->input);
+	while (base->tableau[0][i])
 	{
-		remove_link(&base->env, base->tableau[i]);
-		remove_old_env(base, base->tableau[i]);
+		remove_link(&base->env, base->tableau[0][i]);
+		remove_old_env(base, base->tableau[0][i]);
 		i++;
 	}
 }
