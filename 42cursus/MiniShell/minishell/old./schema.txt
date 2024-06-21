@@ -1,0 +1,91 @@
+
+-- Redirection --
+
+----------------------------------
+
+input :
+
+ls -l > greg > michel >> mark < henry < mishe < mafuyu > benois
+
+----------------------------------
+
+output :
+
+ls < mafuyu > benois
+
+[0] -> | ls -l		| command 
+[1] -> | <			| redirL
+[2] -> | mafuyu		| FileInput
+[3] -> | >			| redirR
+[4] -> | benois		| FileOutput
+
+----------------------------------
+
+| Command | redirL | file1 | redirR | file2 |
+av[0]      av[1]    av[2]   av[3]    av[4]
+
+file1 = input
+file2 = output
+
+----------------------------------
+
+check redir type (multi of one or more)
+a way to store it
+
+change the output and input
+
+exec the string
+
+----------------------------------
+
+set inpout 	-> file1 | in
+			-> file2 | out
+
+
+----------------------------------
+
+line	malloc((char *) x + 1)	 malloc((int) x + 1)
+tab[0]	= salut					 = 1
+``		= michel				 = 37
+``		= et					 = 42
+``		= greg					 = -1156486
+``		= (NULL)				 = 0
+
+if (< | > | << | >>)
+{
+	open > + 1 -> tab[index] = 15 (file1)
+	index++
+}
+
+....
+
+tab in[index fin]	-> open -> base->fd_in
+tab out[jndex fin]	-> open -> base->fd_out
+
+
+----------------------------------
+
+tab int	[0] = 15
+		[1] = 16
+		...
+		...
+		...
+		[8] = 42
+
+free()
+
+tab 5 -> | command | redirL | fileL |  redirr | fileR |
+
+var	tabin	5
+	tabout	2
+
+	lenin	5
+	lenout	2
+	
+	typein	1
+	typeout	3
+
+				^
+refaire ligne	|
+
+minishell.h

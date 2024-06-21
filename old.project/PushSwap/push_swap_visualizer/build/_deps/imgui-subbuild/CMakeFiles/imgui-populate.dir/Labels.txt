@@ -1,0 +1,14 @@
+# Target labels
+ imgui-populate
+# Source files and their labels
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/CMakeFiles/imgui-populate
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/CMakeFiles/imgui-populate.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/CMakeFiles/imgui-populate-complete.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/imgui-populate-install.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/imgui-populate-mkdir.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/imgui-populate-download.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/imgui-populate-update.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/imgui-populate-patch.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/imgui-populate-configure.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/imgui-populate-build.rule
+/home/vamologl/Desktop/42cursus/PushSwap/push_swap_visualizer/build/_deps/imgui-subbuild/imgui-populate-prefix/src/imgui-populate-stamp/imgui-populate-test.rule

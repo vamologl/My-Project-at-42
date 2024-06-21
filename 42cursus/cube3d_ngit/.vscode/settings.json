@@ -1,0 +1,12 @@
+{
+	"files.associations": {
+		"unistd.h": "c",
+		"mlx.h": "c",
+		"include.h": "c",
+		"math.h": "c",
+		"libft.h": "c",
+		"stdbool.h": "c",
+		"gc.h": "c",
+		"fcntl.h": "c"
+	}
+}

@@ -1,0 +1,5 @@
+Sync the client and the serv with a signal
+
+when the client send a byte, wait for the server to send a signal before sending the next byte
+
+a bit slower but fix corruption

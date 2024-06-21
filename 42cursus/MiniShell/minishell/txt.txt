@@ -1,0 +1,6 @@
+// fixed error with . and ..
+// fixed double prompt
+// fixed return code 130 not used
+// fixed ctrl + c with cat and grep returning text
+// fixed some invalid free in GNL
+// fixed all builtin with ctrl + c, now they stop
