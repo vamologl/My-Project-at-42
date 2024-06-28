@@ -6,11 +6,11 @@
 /*   By: vamologl <vamologl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 10:07:59 by vamologl          #+#    #+#             */
-/*   Updated: 2024/06/10 13:46:36 by vamologl         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:54:42 by vamologl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../include.h"
 
 char	*ft_strdup_gc(const char *s, int imp)
 {

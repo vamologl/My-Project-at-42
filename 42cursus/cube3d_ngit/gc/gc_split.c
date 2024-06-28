@@ -6,11 +6,11 @@
 /*   By: vamologl <vamologl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:11:00 by vamologl          #+#    #+#             */
-/*   Updated: 2024/04/18 10:44:15 by vamologl         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:54:34 by vamologl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../include.h"
 
 static int	ft_lword(char const *s, char c, int i)
 {

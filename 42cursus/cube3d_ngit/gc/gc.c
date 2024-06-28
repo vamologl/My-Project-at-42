@@ -6,11 +6,11 @@
 /*   By: vamologl <vamologl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:53:49 by vamologl          #+#    #+#             */
-/*   Updated: 2024/04/19 13:11:35 by vamologl         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:54:46 by vamologl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
+#include "../include.h"
 
 void	free_node( t_gc *node );
 t_gc	*ll_add_back( t_gc *lst, t_gc *node );

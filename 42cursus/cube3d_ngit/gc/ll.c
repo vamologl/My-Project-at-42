@@ -6,11 +6,11 @@
 /*   By: vamologl <vamologl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 13:54:50 by vamologl          #+#    #+#             */
-/*   Updated: 2024/04/19 13:12:21 by vamologl         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:54:52 by vamologl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
+#include "../include.h"
 
 t_gc	*gc_memory(t_gc *node, int code);
 

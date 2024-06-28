@@ -7,32 +7,39 @@ void	init_raycast(t_raycast *ray, int x, t_cube *cube)
 	ray->rayDirY = cube->player->dirY + cube->player->planeY * ray->cameraX;
 	ray->mapX = (int)cube->player->posX;
 	ray->mapY = (int)cube->player->posY;
-	ray->deltaDistX = (ray->rayDirX == 0) ? 2147 : fabs(1 / ray->rayDirX); // to change
-	ray->deltaDistY = (ray->rayDirY == 0) ? 2147 : fabs(1 / ray->rayDirY); // to change
+	if (ray->rayDirX == 0)
+		ray->deltaDistX = INT_MAX;
+	else
+		ray->deltaDistX = fabs(1 / ray->rayDirX);
+	if (ray->rayDirY == 0)
+		ray->deltaDistY = INT_MAX;
+	else
+		ray->deltaDistY = fabs(1 / ray->rayDirY);
 	ray->hit = 0;
 }
 
 void	color(t_raycast *ray, t_cube *cube)
 {
 	if(cube->worldMap[ray->mapX][ray->mapY] == '1')
-		ray->color = 0x6b6b6b;
-	else if(cube->worldMap[ray->mapX][ray->mapY] == '2') 
-		ray->color = 0x8a8a8a;
-	else if(cube->worldMap[ray->mapX][ray->mapY] == '3')
-		ray->color = 0x424242;
-	else if(cube->worldMap[ray->mapX][ray->mapY] == '4')
-		ray->color = 0xFFFFFF;
+	{
+		if (ray->side == 0 && ray->rayDirX < 0)
+			ray->color = 0x6b00e6; // walls
+		else if (ray->side == 0 && ray->rayDirX > 0)
+			ray->color = 0xff00bc; // walls
+		else if (ray->side == 1 && ray->rayDirY > 0)
+			ray->color = 0x00bcff; // walls
+		else if (ray->side == 1 && ray->rayDirY < 0)
+			ray->color = 0xffffff; // walls
+
+	}
 	else
-		ray->color = 0x6b00e6;
-	if(ray->side == 1)
-		ray->color = ray->color / 2;	
+		ray->color = 0x00ff00; // unknown
 }
 
 void	draw_line(t_cube *cube, int x, int drawStart, int drawEnd, int color)
 {
 	int y;
 	int pixel;
-
 	y = drawStart;
 	while (y < drawEnd)
 	{
@@ -42,6 +49,18 @@ void	draw_line(t_cube *cube, int x, int drawStart, int drawEnd, int color)
 	}
 }
 
+char* doubleToString(double value) // debug, to remove
+{
+    char *str = (char *)gc_alloc(32 * sizeof(char), 1);
+    if (str == NULL)
+	{
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+    snprintf(str, 32, "%lf", value);
+    return str;
+}
+
 void draw_background(t_cube *cube)
 {
 	int x;
@@ -49,8 +68,9 @@ void draw_background(t_cube *cube)
 	x = 0;
 	while (x < screenWidth)
 	{
-		draw_line(cube, x, 0, screenHeight, 0x00dfff);
-		draw_line(cube, x, screenHeight / 2, screenHeight, 0x00ab00);
+		draw_line(cube, x, 0, screenHeight, cube->color_c);
+		draw_line(cube, x, screenHeight / 2, screenHeight, cube->color_f);
+		// draw_line(cube, x, screenHeight / 2, screenHeight, 0x808080);
 		x++;
 	}
 }
@@ -95,12 +115,15 @@ void	cast_ray(t_cube *cube, int x) // N only, rest E S W not currently supported
 			ray->mapY += ray->stepY;
 			ray->side = 1;
 		}
-		if(cube->worldMap[ray->mapX] && cube->worldMap[ray->mapX][ray->mapY] > '0')
+		if(cube->worldMap[ray->mapX] && cube->worldMap[ray->mapX][ray->mapY] != '0' && cube->worldMap[ray->mapX][ray->mapY] != 'N'
+			&& cube->worldMap[ray->mapX][ray->mapY] != 'S' && cube->worldMap[ray->mapX][ray->mapY] != 'E'
+				&& cube->worldMap[ray->mapX][ray->mapY] != 'W')
 			ray->hit = 1;
 	}
 
+
 	if(ray->side == 0)
-		ray->perpWallDist = (ray->sideDistX - ray->deltaDistX);
+		ray->perpWallDist = (ray->sideDistX - ray->deltaDistX);	
 	else         
 		ray->perpWallDist = (ray->sideDistY - ray->deltaDistY);
 
@@ -111,31 +134,28 @@ void	cast_ray(t_cube *cube, int x) // N only, rest E S W not currently supported
 		ray->drawStart = 0;
 	ray->drawEnd = ray->lineHeight / 2 + screenHeight / 2;
 	
-	
 	if(ray->drawEnd >= screenHeight)
 		ray->drawEnd = screenHeight - 1;
 
 	color(ray, cube);
 
-	draw_line(cube, x, ray->drawStart, ray->drawEnd, ray->color);
+	draw_line(cube, x, ray->drawStart , ray->drawEnd, ray->color);
+
 	free(ray);
 }
 
-int	main_loop(t_cube *cube)
+int	draw_loop(t_cube *cube)
 {
 	int x;
+	char *s;
 
 	x = 0;
 	cube->img = mlx_new_image(cube->mlx, screenWidth, screenHeight);
 	cube->data_addr = mlx_get_data_addr(cube->img, &cube->bits_per_pixel, &cube->size_line, &cube->endian);
 
-	printf("player posY = %f\n", cube->player->posY);
-	printf("player posX = %f\n", cube->player->posX);
-	printf("player dirY = %f\n", cube->player->dirY);
-	printf("player dirX = %f\n", cube->player->dirX);
-	printf("player planeY = %f\n", cube->player->planeY);
-	printf("player planeX = %f\n", cube->player->planeX);
 	draw_background(cube);
+	movement(cube);
+
 	while (x < screenWidth)
 	{
 		cast_ray(cube, x);
@@ -143,5 +163,72 @@ int	main_loop(t_cube *cube)
 	}
 	mlx_put_image_to_window(cube->mlx, cube->win, cube->img, 0, 0);
 	mlx_destroy_image(cube->mlx, cube->img);
-	return 0;
+
+	// crosshair
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2, screenHeight / 2, 0xffffff);
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2, screenHeight / 2 + 2, 0xff00bc);
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2, screenHeight / 2 + 1, 0xffbcbc);
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2, screenHeight / 2 - 1, 0xffbcbc);
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2, screenHeight / 2 - 2, 0xff00bc);
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2 + 2, screenHeight / 2, 0xff00bc);
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2 + 1, screenHeight / 2, 0xffbcbc);
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2 - 1, screenHeight / 2, 0xffbcbc);
+	mlx_pixel_put(cube->mlx, cube->win, screenWidth / 2 - 2, screenHeight / 2, 0xff00bc);
+
+
+	// THE DEBUG !
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8, 0xffffff, "player posY = ");
+	s = doubleToString(cube->player->posY);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 15, 0xffffff, "player posX = ");
+	s = doubleToString(cube->player->posX);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 15, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 30, 0xffffff, "player dirY = ");
+	s = doubleToString(cube->player->dirY);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 30, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 45, 0xffffff, "player dirX = ");
+	s = doubleToString(cube->player->dirX);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 45, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 60, 0xffffff, "player planeY = ");
+	s = doubleToString(cube->player->planeY);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 60, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 75, 0xffffff, "player planeX = ");
+	s = doubleToString(cube->player->planeX);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 75, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 90, 0xffffff, "camera dirX = ");
+	s = doubleToString(cube->player->dirX);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 90, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 105, 0xffffff, "camera dirY = ");
+	s = doubleToString(cube->player->dirY);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 105, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 120, 0xffffff, "camera planeX = ");
+	s = doubleToString(cube->player->planeX);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 120, 0xffffff, s);
+	free(s);
+
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10, screenHeight / 8 + 135, 0xffffff, "camera planeY = ");
+	s = doubleToString(cube->player->planeY);
+	mlx_string_put(cube->mlx, cube->win, screenWidth / 10 + 100, screenHeight / 8 + 135, 0xffffff, s);
+	free(s);
+
+
+
+	return (0);
 }

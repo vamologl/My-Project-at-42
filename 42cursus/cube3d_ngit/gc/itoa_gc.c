@@ -6,11 +6,11 @@
 /*   By: vamologl <vamologl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 14:01:31 by vamologl          #+#    #+#             */
-/*   Updated: 2024/05/17 11:21:02 by vamologl         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:54:48 by vamologl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../include.h"
 
 static unsigned int	get_nb_digit(long n_l, int sign)
 {
